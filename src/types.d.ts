@@ -14,4 +14,10 @@ declare module '*.png' {
 declare module '*.jpg' {
   const content: string;
   export default content;
+}
+
+declare namespace JSX {
+  interface IntrinsicElements {
+    [elemName: string]: any;
+  }
 } 

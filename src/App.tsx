@@ -3,6 +3,7 @@ import { Bus, Car, Recycle as Motorcycle, MapPin, Clock, Users, Bell, ArrowRight
 import CarpoolingPage from './pages/CarpoolingPage';
 import MotorcyclePoolPage from './pages/MotorcyclePoolPage';
 import BusTransitPage from './pages/BusTransitPage';
+import { LucideIcon } from 'lucide-react';
 
 interface TransitInfo {
   route: string;
@@ -23,7 +24,7 @@ const TransportCard = ({
   description, 
   onClick
 }: { 
-  icon: React.ElementType; 
+  icon: LucideIcon; 
   title: string; 
   description: string;
   onClick: () => void;
