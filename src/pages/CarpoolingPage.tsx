@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Users, MapPin, Clock, Car, Home, Bus } from 'lucide-react';
 
 interface User {

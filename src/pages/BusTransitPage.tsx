@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Bus, MapPin, Clock, ChevronRight, ChevronDown, Bike } from 'lucide-react';
 
 interface BusStop {

@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Bus, Car, Recycle as Motorcycle, MapPin, Clock, Users, Bell, ArrowRight } from 'lucide-react';
 import CarpoolingPage from './pages/CarpoolingPage';
 import MotorcyclePoolPage from './pages/MotorcyclePoolPage';
 import BusTransitPage from './pages/BusTransitPage';
-
-type TransportMode = 'carpool' | 'motorcycle' | 'bus';
 
 interface TransitInfo {
   route: string;
@@ -24,13 +21,11 @@ const TransportCard = ({
   icon: Icon, 
   title, 
   description, 
-  mode,
   onClick
 }: { 
   icon: React.ElementType; 
   title: string; 
   description: string;
-  mode: TransportMode;
   onClick: () => void;
 }) => (
   <button
@@ -45,7 +40,6 @@ const TransportCard = ({
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [selectedMode, setSelectedMode] = useState<TransportMode | null>(null);
   
   const transitInfo: TransitInfo[] = [
     { route: "Route X1", nextArrival: "5 mins", capacity: "Available" },
@@ -81,87 +75,67 @@ const HomePage = () => {
               icon={Car}
               title="Carpooling"
               description="Share rides with community members heading the same way"
-              mode="carpool"
               onClick={() => navigate('/carpooling')}
             />
             <TransportCard
               icon={Motorcycle}
               title="Motorcycle Pool"
               description="Quick and efficient bike sharing for shorter trips"
-              mode="motorcycle"
               onClick={() => navigate('/motorcycle-pool')}
             />
             <TransportCard
               icon={Bus}
               title="Bus Transit"
               description="Track real-time bus locations and schedules"
-              mode="bus"
               onClick={() => navigate('/bus-transit')}
             />
           </div>
         </section>
 
-        {/* Community Travel Notifications */}
+        {/* Live Transit Updates */}
         <section className="mb-12">
-          <div className="flex items-center mb-6">
-            <Bell className="w-6 h-6 text-blue-600 mr-2" />
-            <h2 className="text-2xl font-semibold">Community Travel Updates</h2>
-          </div>
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="divide-y divide-gray-200">
-              {travelNotifications.map((notification, index) => (
-                <div key={index} className="p-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-blue-100 rounded-full p-2">
-                        <Users className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">{notification.user}</h3>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <span>Traveling to {notification.destination}</span>
-                          <ArrowRight className="w-4 h-4 mx-2" />
-                          <span>{notification.departureTime}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <button className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
-                        {notification.seatsAvailable} {notification.seatsAvailable === 1 ? 'seat' : 'seats'} available
-                      </button>
-                    </div>
-                  </div>
+          <h2 className="text-2xl font-semibold mb-6">Live Transit Updates</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {transitInfo.map((info, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl shadow-md">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">{info.route}</h3>
+                  <Clock className="h-5 w-5 text-gray-500" />
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Next arrival: {info.nextArrival}</span>
+                  <span className="text-sm text-gray-600">{info.capacity}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* Live Transit Information */}
+        {/* Travel Notifications */}
         <section>
-          <div className="flex items-center mb-6">
-            <Clock className="w-6 h-6 text-blue-600 mr-2" />
-            <h2 className="text-2xl font-semibold">Live Transit Updates</h2>
-          </div>
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="divide-y divide-gray-200">
-              {transitInfo.map((info, index) => (
-                <div key={index} className="p-6 flex items-center justify-between">
+          <h2 className="text-2xl font-semibold mb-6">Travel Notifications</h2>
+          <div className="space-y-4">
+            {travelNotifications.map((notification, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl shadow-md">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <Users className="h-5 w-5 text-blue-600 mr-2" />
+                    <span className="font-semibold">{notification.user}</span>
+                  </div>
+                  <Bell className="h-5 w-5 text-gray-500" />
+                </div>
+                <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-medium text-gray-900">{info.route}</h3>
-                    <p className="text-sm text-gray-500">Next arrival: {info.nextArrival}</p>
+                    <p className="text-sm text-gray-600">{notification.destination}</p>
+                    <p className="text-sm text-gray-600">Departure: {notification.departureTime}</p>
                   </div>
                   <div className="flex items-center">
-                    <Users className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className={`text-sm ${
-                      info.capacity === 'Available' ? 'text-green-600' : 'text-orange-600'
-                    }`}>
-                      {info.capacity}
-                    </span>
+                    <span className="text-sm text-gray-600 mr-2">{notification.seatsAvailable} seats available</span>
+                    <ArrowRight className="h-5 w-5 text-blue-600" />
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </section>
       </main>
