@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Bus, Car, Recycle as Motorcycle, MapPin, Clock, Users, Bell, ArrowRight } from 'lucide-react';
 import CarpoolingPage from './pages/CarpoolingPage';
 import MotorcyclePoolPage from './pages/MotorcyclePoolPage';
